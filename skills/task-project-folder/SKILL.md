@@ -1,6 +1,6 @@
 ---
 name: task-project-folder
-description: "Start every user task with a unique project directory under ${PROJECTS_ROOT:-/home/hermes/projects}; capture prompts, final responses, artifacts, web sources, tool/skill usage, logs, and task metadata in a reproducible structure."
+description: "Start every user task with a unique project directory under ${PROJECTS_ROOT}; capture prompts, final responses, artifacts, web sources, tool/skill usage, logs, and task metadata in a reproducible structure."
 version: 2.2.0
 author: Hermes Agent
 license: MIT
@@ -14,7 +14,7 @@ metadata:
 
 ## Overview
 
-Minden új felhasználói feladat elején hozz létre egy egyedi projektmappát a `${PROJECTS_ROOT:-/home/hermes/projects}` alatt. A mappa legyen a feladat teljes, rendezett munkaterülete: ide kerüljön minden prompt, jegyzet, forrás, létrehozott fájl, export, webes forráslista, eszköz-/skillhasználati napló és rövid összefoglaló.
+Minden új felhasználói feladat elején hozz létre egy egyedi projektmappát a `${PROJECTS_ROOT}` alatt. A mappa legyen a feladat teljes, rendezett munkaterülete: ide kerüljön minden prompt, jegyzet, forrás, létrehozott fájl, export, webes forráslista, eszköz-/skillhasználati napló és rövid összefoglaló.
 
 Cél: a feladat később visszakereshető, auditálható, reprodukálható és tisztán átadható legyen.
 
@@ -24,7 +24,7 @@ Session-specific rationale and pitfalls for final-response capture: `references/
 
 A skill célja az auditálhatóság, de ne termeljen felesleges adminisztrációt.
 
-- `PROJECTS_ROOT` (opcionális): a projektmappák gyökere. Default: `/home/hermes/projects`.
+- `PROJECTS_ROOT` (kötelező): a projektmappák gyökere (abszolút útvonal).
 - `TASK_FOLDER_MODE`:
   - `full` (default): teljes auditstruktúra;
   - `lite`: minimál naplózás kis feladatokhoz.
@@ -50,7 +50,7 @@ Ha a feladat egy korábbi task egyértelmű folytatása, használd az eredeti pr
 Full módban használd ezt az alapstruktúrát:
 
 ```text
-${PROJECTS_ROOT:-/home/hermes/projects}/YYYYMMDD-HHMMSS-short-task-slug/
+${PROJECTS_ROOT}/YYYYMMDD-HHMMSS-short-task-slug/
 ├── README.md
 ├── task_metadata.json
 ├── inputs/
@@ -79,7 +79,7 @@ ${PROJECTS_ROOT:-/home/hermes/projects}/YYYYMMDD-HHMMSS-short-task-slug/
 Lite módban minimál struktúra is elfogadott:
 
 ```text
-${PROJECTS_ROOT:-/home/hermes/projects}/YYYYMMDD-HHMMSS-short-task-slug/
+${PROJECTS_ROOT}/YYYYMMDD-HHMMSS-short-task-slug/
 ├── task_metadata.json
 ├── inputs/
 │   └── prompts.json
@@ -100,9 +100,9 @@ Alapszabályok:
 
 ## Naming Rules
 
-1. Gyökér: `${PROJECTS_ROOT:-/home/hermes/projects}` vagy a környezetedben beállított `PROJECTS_ROOT`.
+1. Gyökér: `${PROJECTS_ROOT}` vagy a környezetedben beállított `PROJECTS_ROOT`.
 2. Projektmappa név: `YYYYMMDD-HHMMSS-short-task-slug`.
-   - Példa: `${PROJECTS_ROOT:-/home/hermes/projects}/20260429-082320-task-project-folder-skill-tuning`
+   - Példa: `${PROJECTS_ROOT}/20260429-082320-task-project-folder-skill-tuning`
 3. A slug legyen rövid, kisbetűs, ékezet nélküli, kötőjeles.
 4. Ütközés esetén adj hozzá sorszámot: `-02`, `-03`.
 
@@ -338,7 +338,7 @@ Minden létrehozott vagy módosított fájlt jegyezz fel `artifacts/manifest.jso
 ```json
 [
   {
-    "path": "${PROJECTS_ROOT:-/home/hermes/projects}/.../outputs/report.md",
+    "path": "${PROJECTS_ROOT}/.../outputs/report.md",
     "type": "markdown_report",
     "created_or_modified": "created",
     "timestamp_local": "2026-04-29T08:40:00",
@@ -359,7 +359,7 @@ Tartalmazza legalább:
 
 ```json
 {
-  "project_dir": "${PROJECTS_ROOT:-/home/hermes/projects}/YYYYMMDD-HHMMSS-slug",
+  "project_dir": "${PROJECTS_ROOT}/YYYYMMDD-HHMMSS-slug",
   "created_at_local": "2026-04-29T08:23:20",
   "task_title": "Rövid cím",
   "task_slug": "short-task-slug",
@@ -428,7 +428,7 @@ A záró válaszban szerepeljen:
 
 ## Verification Checklist
 
-- [ ] Projektmappa létrejött `PROJECTS_ROOT` alatt (default: `${PROJECTS_ROOT:-/home/hermes/projects}`), egyedi timestampelt névvel.
+- [ ] Projektmappa létrejött `PROJECTS_ROOT` alatt (default: `${PROJECTS_ROOT}`), egyedi timestampelt névvel.
 - [ ] Standard almappák létrejöttek.
 - [ ] `README.md` és `task_metadata.json` létrejött.
 - [ ] Minden user prompt mentve legalább `inputs/prompts.json` alatt (MD nézet opcionális).

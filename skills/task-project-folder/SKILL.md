@@ -32,6 +32,7 @@ A skill célja az auditálhatóság, de ne termeljen felesleges adminisztráció
 Ajánlott döntési szabály:
 - **lite**: egyszerű, rövid, alacsony kockázatú kérés, kevés toolhívással.
 - **full**: több lépéses, fájlmódosítós, webforrásos, vagy átadásra szánt feladat.
+- **Kötelező értelmezés:** a `lite` csak naplózási mélység, **nem** jelentheti a projektmappa létrehozásának kihagyását. Új tasknál a mappa létrehozása mindig kötelező `${PROJECTS_ROOT}` alatt.
 
 
 ## When to Use
